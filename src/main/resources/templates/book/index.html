@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Store - Quản Lý Thư Viện Thông Minh</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="animated-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <th:block th:replace="~{layout::header}"></th:block>
+
+    <!-- Hero Section -->
+    <section class="hero-modern">
+        <div class="hero-content">
+            <div class="badge-new">
+                <i class="fas fa-star"></i>
+                <span>Phiên bản mới 2026</span>
+            </div>
+            <h1 class="hero-title">Quản Lý Thư Viện<br/>Thông Minh & Hiện Đại</h1>
+            <p class="hero-description">
+                Nền tảng quản lý sách toàn diện với công nghệ tiên tiến, 
+                giúp tổ chức thư viện của bạn trở nên chuyên nghiệp và hiệu quả hơn bao giờ hết
+            </p>
+            <div class="cta-buttons">
+                <a href="/books" class="btn-modern btn-primary-modern">
+                    <i class="fas fa-book"></i>
+                    Khám Phá Ngay
+                </a>
+                <a href="/books/add" class="btn-modern btn-secondary-modern" sec:authorize="hasAnyAuthority('ADMIN')">
+                    <i class="fas fa-plus-circle"></i>
+                    Thêm Sách Mới
+                </a>
+                <a href="/books" class="btn-modern btn-primary-modern">
+                    <i class="fas fa-book"></i>
+                    Sản Phẩm
+                </a>
+                <a href="/login" class="btn-modern btn-primary-modern" sec:authorize="!isAuthenticated()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Đăng Nhập
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-modern">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Tính Năng</span>
+                <h2 class="section-title">Giải Pháp Toàn Diện</h2>
+                <p class="section-description">
+                    Tất cả những gì bạn cần để quản lý thư viện một cách chuyên nghiệp
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card-modern">
+                    <div class="feature-icon-modern">📚</div>
+                    <h3 class="feature-title">Quản Lý Sách</h3>
+                    <p class="feature-description">
+                        Thêm, chỉnh sửa, xóa sách dễ dàng. Tìm kiếm nhanh chóng với bộ lọc thông minh
+                    </p>
+                </div>
+                
+                <div class="feature-card-modern">
+                    <div class="feature-icon-modern">🗂️</div>
+                    <h3 class="feature-title">Phân Loại Thông Minh</h3>
+                    <p class="feature-description">
+                        Tổ chức sách theo danh mục, tác giả, năm xuất bản với hệ thống phân cấp linh hoạt
+                    </p>
+                </div>
+                
+                <div class="feature-card-modern">
+                    <div class="feature-icon-modern">🛒</div>
+                    <h3 class="feature-title">Giỏ Hàng & Đặt Sách</h3>
+                    <p class="feature-description">
+                        Trải nghiệm mua sắm mượt mà, thanh toán nhanh chóng và theo dõi đơn hàng
+                    </p>
+                </div>
+                
+                <div class="feature-card-modern">
+                    <div class="feature-icon-modern">🔐</div>
+                    <h3 class="feature-title">Bảo Mật Cao</h3>
+                    <p class="feature-description">
+                        Phân quyền chi tiết, mã hóa dữ liệu, đảm bảo an toàn tuyệt đối cho hệ thống
+                    </p>
+                </div>
+                
+                <div class="feature-card-modern">
+                    <div class="feature-icon-modern">📊</div>
+                    <h3 class="feature-title">Báo Cáo & Thống Kê</h3>
+                    <p class="feature-description">
+                        Dashboard trực quan, phân tích chi tiết về tình trạng sách và hoạt động mượn trả
+                    </p>
+                </div>
+                
+                <div class="feature-card-modern">
+                    <div class="feature-icon-modern">⚡</div>
+                    <h3 class="feature-title">Hiệu Năng Cao</h3>
+                    <p class="feature-description">
+                        Tốc độ xử lý nhanh, giao diện responsive, tương thích mọi thiết bị
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-modern">
+        <div class="stats-grid">
+            <div class="stat-item-modern">
+                <div class="stat-number-modern">10K+</div>
+                <div class="stat-label-modern">Đầu Sách</div>
+            </div>
+            <div class="stat-item-modern">
+                <div class="stat-number-modern">100+</div>
+                <div class="stat-label-modern">Danh Mục</div>
+            </div>
+            <div class="stat-item-modern">
+                <div class="stat-number-modern">5K+</div>
+                <div class="stat-label-modern">Người Dùng</div>
+            </div>
+            <div class="stat-item-modern">
+                <div class="stat-number-modern">99.9%</div>
+                <div class="stat-label-modern">Uptime</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-modern">
+        <div class="cta-box">
+            <div class="cta-content">
+                <h2 class="cta-title">Bắt Đầu Ngay Hôm Nay</h2>
+                <p class="cta-text">
+                    Tham gia cùng hàng ngàn thư viện đang sử dụng giải pháp của chúng tôi
+                </p>
+                <div class="cta-buttons">
+                    <a href="/register" class="btn-modern btn-primary-modern" sec:authorize="!isAuthenticated()">
+                        <i class="fas fa-user-plus"></i>
+                        Đăng Ký Miễn Phí
+                    </a>
+                    <a href="/books" class="btn-modern btn-secondary-modern" sec:authorize="hasAnyAuthority('ADMIN', 'USER')">
+                        <i class="fas fa-arrow-right"></i>
+                        Vào Trang Quản Lý
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <th:block th:replace="~{layout::footer}"></th:block>
+</body>
+</html>

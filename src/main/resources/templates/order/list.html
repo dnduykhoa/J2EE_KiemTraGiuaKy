@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đơn Hàng Của Tôi - BookHub</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2d3748 !important;
+            min-height: 100vh;
+        }
+        
+        .orders-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+        
+        .page-header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1a202c !important;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .page-header h1::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background: #667eea;
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .page-header p {
+            color: #4a5568 !important;
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+        
+        .order-card {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+            border-color: #667eea;
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 20px;
+        }
+        
+        .order-id {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a202c !important;
+        }
+        
+        .order-id i {
+            color: #667eea;
+            margin-right: 10px;
+        }
+        
+        .order-date {
+            color: #718096 !important;
+            font-size: 0.95rem;
+        }
+        
+        .order-date i {
+            color: #667eea;
+            margin-right: 5px;
+        }
+        
+        .order-status {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .order-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .order-total {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #dc3545 !important;
+        }
+        
+        .order-total i {
+            margin-right: 8px;
+        }
+        
+        .order-customer {
+            color: #4a5568 !important;
+            margin-bottom: 10px;
+        }
+        
+        .order-customer i {
+            color: #667eea;
+            margin-right: 8px;
+            width: 20px;
+        }
+        
+        .order-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
+        .btn-details {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white !important;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-details:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .order-items {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .order-items-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a202c !important;
+            margin-bottom: 15px;
+        }
+        
+        .item-row {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .item-image {
+            width: 60px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+        
+        .item-info {
+            flex: 1;
+        }
+        
+        .item-title {
+            font-weight: 600;
+            color: #1a202c !important;
+            margin-bottom: 5px;
+        }
+        
+        .item-quantity {
+            color: #718096 !important;
+            font-size: 0.9rem;
+        }
+        
+        .item-price {
+            font-weight: 700;
+            color: #dc3545 !important;
+            font-size: 1.1rem;
+        }
+        
+        .empty-orders {
+            text-align: center;
+            padding: 80px 20px;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+        
+        .empty-orders i {
+            font-size: 5rem;
+            color: #cbd5e0;
+            margin-bottom: 25px;
+        }
+        
+        .empty-orders h3 {
+            color: #1a202c !important;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .empty-orders p {
+            color: #718096 !important;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        
+        .btn-shop {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white !important;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-shop:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .order-summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            color: #4a5568 !important;
+        }
+        
+        .order-summary-row strong {
+            color: #1a202c !important;
+        }
+        
+        @media (max-width: 768px) {
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .order-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .order-actions {
+                width: 100%;
+            }
+            
+            .btn-details {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .item-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .item-image {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body style="color: #2d3748 !important;">
+    <th:block th:replace="~{layout::header}"></th:block>
+    
+    <div class="orders-container">
+        <div class="page-header">
+            <h1><i class="fas fa-clipboard-list"></i> Đơn Hàng Của Tôi</h1>
+            <p>Quản lý và theo dõi đơn hàng của bạn</p>
+        </div>
+        
+        <!-- Nếu có đơn hàng -->
+        <div th:if="${orders != null and orders.size() > 0}">
+            <div th:each="order : ${orders}" class="order-card">
+                <div class="order-header">
+                    <div>
+                        <div class="order-id">
+                            <i class="fas fa-hashtag"></i>Đơn hàng #<span th:text="${order.id}"></span>
+                        </div>
+                        <div class="order-date">
+                            <i class="far fa-calendar-alt"></i>
+                            <span th:text="${#dates.format(order.orderDate, 'dd/MM/yyyy HH:mm')}"></span>
+                        </div>
+                    </div>
+                    <span class="order-status status-completed">
+                        <i class="fas fa-check-circle"></i> Hoàn thành
+                    </span>
+                </div>
+                
+                <div class="order-info">
+                    <div>
+                        <div class="order-customer">
+                            <i class="fas fa-user"></i>
+                            <strong>Khách hàng:</strong> <span th:text="${order.customerName}"></span>
+                        </div>
+                        <div class="order-customer">
+                            <i class="fas fa-phone"></i>
+                            <strong>Số điện thoại:</strong> <span th:text="${order.phone}"></span>
+                        </div>
+                        <div class="order-customer">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <strong>Địa chỉ:</strong> <span th:text="${order.address}"></span>
+                        </div>
+                        <div class="order-customer" th:if="${order.note != null and !order.note.isEmpty()}">
+                            <i class="fas fa-sticky-note"></i>
+                            <strong>Ghi chú:</strong> <span th:text="${order.note}"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="order-items">
+                    <div class="order-items-title">
+                        <i class="fas fa-box-open"></i> Chi tiết đơn hàng (<span th:text="${order.orderItems.size()}"></span> sản phẩm)
+                    </div>
+                    
+                    <div th:each="item : ${order.orderItems}" class="item-row">
+                        <img th:src="${item.book != null ? item.book.imageUrl : '/images/no-image.png'}" 
+                             th:alt="${item.book != null ? item.book.title : 'Sách'}" class="item-image">
+                        <div class="item-info">
+                            <div class="item-title" th:text="${item.book != null ? item.book.title : 'Không có tên'}"></div>
+                            <div class="item-quantity">
+                                <i class="fas fa-box"></i> Số lượng: <strong th:text="${item.quantity}"></strong>
+                            </div>
+                        </div>
+                        <div class="item-price">
+                            <span th:text="${#numbers.formatDecimal((item.price != null ? item.price : (item.book != null ? item.book.price : 0)) * item.quantity, 0, 'COMMA', 0, 'POINT')} + ' đ'"></span>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #f0f0f0;">
+                        <div class="order-summary-row">
+                            <span>Tạm tính:</span>
+                            <strong th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')} + ' đ'"></strong>
+                        </div>
+                        <div class="order-summary-row">
+                            <span>Phí vận chuyển:</span>
+                            <strong>Miễn phí</strong>
+                        </div>
+                        <div class="order-summary-row" style="font-size: 1.2rem; color: #1a202c !important; padding-top: 15px; border-top: 2px solid #f0f0f0; margin-top: 10px;">
+                            <span><strong>Tổng cộng:</strong></span>
+                            <strong style="color: #dc3545 !important;" th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')} + ' đ'"></strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Nếu chưa có đơn hàng -->
+        <div th:if="${orders == null or orders.size() == 0}" class="empty-orders">
+            <i class="fas fa-shopping-bag"></i>
+            <h3>Chưa có đơn hàng nào</h3>
+            <p>Bạn chưa đặt đơn hàng nào. Hãy khám phá và mua sắm ngay!</p>
+            <a th:href="@{/books}" class="btn-shop">
+                <i class="fas fa-shopping-cart"></i> Mua Sắm Ngay
+            </a>
+        </div>
+        
+        <!-- Nút tiếp tục mua sắm -->
+        <div th:if="${orders != null and orders.size() > 0}" style="text-align: center; margin-top: 30px;">
+            <a th:href="@{/books}" class="btn-shop">
+                <i class="fas fa-arrow-left"></i> Tiếp Tục Mua Sắm
+            </a>
+        </div>
+    </div>
+    
+    <th:block th:replace="~{layout::footer}"></th:block>
+</body>
+</html>

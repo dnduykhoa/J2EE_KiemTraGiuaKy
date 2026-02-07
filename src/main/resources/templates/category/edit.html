@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Chỉnh Sửa Danh Mục - Book Store</title>
+    <style>
+        body {
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+        
+        .edit-category-container {
+            padding: 40px 0;
+        }
+        
+        .page-header {
+            background: white;
+            padding: 24px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #667eea;
+        }
+        
+        .page-header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .page-header h1 i {
+            color: #667eea;
+        }
+        
+        .form-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            max-width: 600px;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-label i {
+            color: #667eea;
+            font-size: 14px;
+        }
+        
+        .form-control {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn-update {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-update:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-back {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #2d3748;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-back:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+            color: #2d3748;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+    <th:block th:replace="~{layout::header}"></th:block>
+    
+    <div class="container edit-category-container">
+        <div class="page-header">
+            <h1>
+                <i class="fas fa-edit"></i>
+                Chỉnh Sửa Danh Mục
+            </h1>
+        </div>
+        
+        <div class="form-card">
+            <form th:action="@{/categories/update/{id}(id=${category.id})}" th:object="${category}" method="post">
+                <div class="mb-3">
+                    <label class="form-label" for="name">
+                        <i class="fas fa-tag"></i>
+                        Tên Danh Mục <span class="text-danger">*</span>
+                    </label>
+                    <input class="form-control" type="text" th:field="*{name}" id="name" required>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-update">
+                        <i class="fas fa-save"></i>
+                        Cập Nhật
+                    </button>
+                    <a th:href="@{/categories}" class="btn-back">
+                        <i class="fas fa-arrow-left"></i>
+                        Quay Lại
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <th:block th:replace="~{layout::footer}"></th:block>
+</body>
+</html>

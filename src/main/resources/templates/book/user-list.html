@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản phẩm - Book Store</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2d3748;
+            min-height: 100vh;
+        }
+        
+        .page-header {
+            background: #ffffff;
+            padding: 50px 0;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .page-header h1 {
+            color: #1a202c;
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+        
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .search-box .form-control {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            color: #2d3748;
+            padding: 14px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+        }
+        
+        .search-box .form-control:focus {
+            background: #ffffff;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .search-box .form-control::placeholder {
+            color: #a0aec0;
+        }
+        
+        .search-box .btn {
+            border-radius: 25px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        
+        .search-box .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .book-card {
+            background: #ffffff;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+            background: #ffffff;
+        }
+        
+        .book-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            background: rgba(0, 0, 0, 0.15);
+        }
+        
+        .book-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+        }
+        
+        .book-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #1e1e2e;
+            min-height: 60px;
+        }
+        
+        .book-author {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .book-category {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(102, 126, 234, 0.15);
+            border: 1px solid rgba(102, 126, 234, 0.4);
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .book-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #dc3545;
+            margin-bottom: 15px;
+        }
+        
+        .book-actions {
+            margin-top: auto;
+        }
+        
+        .btn-add-cart {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-add-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        .btn-add-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        .no-books {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .no-books i {
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 20px;
+        }
+        
+        .pagination .page-link {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+        
+        .pagination .page-link:hover {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+        
+        .pagination .page-item.active .page-link {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <th:block th:replace="~{layout::header}"></th:block>
+    
+    <div class="page-header">
+        <div class="container">
+            <h1 class="text-center mb-4">
+                <i class="fas fa-book"></i> Sản Phẩm
+            </h1>
+            <div class="search-box">
+                <form class="d-flex" th:action="@{/books/search}" method="get">
+                    <input class="form-control me-2" type="search" placeholder="Tìm kiếm sách..." 
+                           name="keyword" th:value="${keyword}">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search"></i> Tìm
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container mb-5">
+        <div class="row g-4" th:if="${books.size() > 0}">
+            <div class="col-md-4" th:each="book : ${books}">
+                <div class="book-card">
+                    <img th:if="${book.imageUrl}" th:src="${book.imageUrl}" 
+                         class="book-image" th:alt="${book.title}">
+                    <div th:unless="${book.imageUrl}" class="book-image d-flex align-items-center justify-content-center">
+                        <i class="fas fa-book fa-4x" style="color: rgba(255,255,255,0.2);"></i>
+                    </div>
+                    <div class="book-body">
+                        <h3 class="book-title" th:text="${book.title}"></h3>
+                        <p class="book-author">
+                            <i class="fas fa-user"></i> <span th:text="${book.author}"></span>
+                        </p>
+                        <span class="book-category" th:if="${book.category}">
+                            <i class="fas fa-tag"></i> <span th:text="${book.category.name}"></span>
+                        </span>
+                        <div class="book-price" th:text="${#numbers.formatDecimal(book.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></div>
+                        <div class="book-actions">
+                            <!-- Hiện nút cho user đã đăng nhập -->
+                            <form th:action="@{/books/add-to-cart}" method="post" sec:authorize="isAuthenticated()">
+                                <input type="hidden" name="id" th:value="${book.id}">
+                                <input type="hidden" name="name" th:value="${book.title}">
+                                <input type="hidden" name="price" th:value="${book.price}">
+                                <input type="hidden" name="imageUrl" th:value="${book.imageUrl}">
+                                <button type="submit" class="btn-add-cart">
+                                    <i class="fas fa-shopping-cart"></i> Thêm Vào Giỏ
+                                </button>
+                            </form>
+                            
+                            <!-- Hiện nút đăng nhập cho khách -->
+                            <a href="/login" class="btn-add-cart text-center text-decoration-none d-block" 
+                               sec:authorize="!isAuthenticated()">
+                                <i class="fas fa-sign-in-alt"></i> Đăng Nhập Để Mua
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="no-books" th:if="${books.size() == 0}">
+            <i class="fas fa-inbox"></i>
+            <h3>Không tìm thấy sách nào</h3>
+            <p class="text-muted">Thử tìm kiếm với từ khóa khác</p>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="row mt-5" th:if="${totalPages > 1}">
+            <div class="col-12">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                            <a class="page-link" th:href="@{/books(pageNo=${currentPage - 1})}">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" 
+                            th:classappend="${currentPage == i} ? 'active'">
+                            <a class="page-link" th:href="@{/books(pageNo=${i})}" th:text="${i + 1}"></a>
+                        </li>
+                        <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                            <a class="page-link" th:href="@{/books(pageNo=${currentPage + 1})}">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    
+    <th:block th:replace="~{layout::footer}"></th:block>
+</body>
+</html>
